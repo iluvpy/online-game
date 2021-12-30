@@ -1,20 +1,25 @@
-import { get_random_choice, sleep } from "./util.js";
+import { get_random_choice, get_random_int, sleep } from "./util.js";
 console.log("game");
 
 const socket = io(window.location.href);
 const canvas = document.getElementById("display");
 const player_count = document.getElementById("player-count");
+const username_inp = document.getElementById("name-inp");
 const colors = ["green", "red", "yellow", "black", "gray", "blue", "aqua", "purple", "orange"];
-var keys_pressed = {};
-var ctx = canvas.getContext("2d");
+const MAX_NAME_SIZE = 20;
 const UPDATE_RATE = 5; // updates each 5ms
 const PLAYER_RADIUS = 10;
+const PLAYER_SPEED = 200;
+var keys_pressed = {};
+var ctx = canvas.getContext("2d");
 var player_data = null;
 var player = {
     x: 100,
     y: 100,
-    color: get_random_choice(colors)
+    color: get_random_choice(colors),
+    name: `player${get_random_int(0, 100)}`
 };
+username_inp.value = player.name;
 
 
 socket.on("data", (my_data) => {
@@ -27,6 +32,12 @@ window.onkeydown = (ev) => {
 window.onkeyup = (ev) => {
     keys_pressed[ev.key] = false;
 }
+
+username_inp.addEventListener("input", (ev) => {
+    keys_pressed[ev.data] = false; // dont allow key presses while typing name
+    if (username_inp.value.length <= MAX_NAME_SIZE)
+        player.name = username_inp.value;
+})
 
 function draw_text(text, x, y) {
     ctx.fillStyle = "black";
@@ -44,14 +55,15 @@ function draw_player(player_obj) {
 function draw() {
     ctx.canvas.width  = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
+
     
-    draw_text(socket.id, player.x-5, player.y-10);
+    draw_text(player.name, player.x-5, player.y-10);
     draw_player(player);
 
     for (var player_id in player_data) {
         if (player_id !== socket.id) {
             const other_player = player_data[player_id];
-            draw_text(player_id, other_player.x-5, other_player.y-10);
+            draw_text(other_player.name, other_player.x-5, other_player.y-10);
             draw_player(other_player);
         }
     }
@@ -60,29 +72,35 @@ function draw() {
 }
 
 
-function update() {
+function update(delta_time) {
     if (keys_pressed["s"]) {
-        player.y += 1;
+        player.y += PLAYER_SPEED * delta_time;
     }
     if (keys_pressed["w"]) {
-        player.y -= 1;
+        player.y -= PLAYER_SPEED * delta_time;
     } 
     if (keys_pressed["d"]) {
-        player.x += 1;
+        player.x += PLAYER_SPEED * delta_time;
     }
     if (keys_pressed["a"]) {
-        player.x -= 1;
+        player.x -= PLAYER_SPEED * delta_time;
     }
 }
 
 
 
 (async function main() {
+    var delta_time = 0.0;
+    var start = 0;
+    var finish = 0;
     for (;;) {
-        await sleep(UPDATE_RATE);
+        start = new Date().getTime();
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        update();
+        update(delta_time);
         draw();
         socket.emit("get-data", socket.id, player);
+        await sleep(UPDATE_RATE);
+        finish = new Date().getTime();
+        delta_time = (finish - start) / 1000;
     }
 })();
