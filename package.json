@@ -1,0 +1,16 @@
+{
+  "name": "online-game",
+  "version": "1.0.0",
+  "description": "online game",
+  "main": "src/server.js",
+  "author": "iluvpy",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "node ./src/server.mjs"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "socket.io": "^4.4.0"
+  }
+}
