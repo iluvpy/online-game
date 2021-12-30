@@ -25,11 +25,13 @@ io.on('connection', socket => {
 
     socket.on("get-data", (id, data) => {
         //console.log(`data pulled! id: ${id}, p data: ${data}`);
-        if (!(id in player_data)) {
-            console.log(`new user with id ${id} joined!`);
+        if (id !== null) {
+            if (!(id in player_data)) {
+                console.log(`new user with id ${id} joined!`);
+            }
+            
+                player_data[id] = data;
         }
-        if (id !== null)
-            player_data[id] = data;
         socket.emit("data", player_data);
         
     });

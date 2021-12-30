@@ -5,6 +5,7 @@ const socket = io(window.location.href);
 const canvas = document.getElementById("display");
 const player_count = document.getElementById("player-count");
 const colors = ["green", "red", "yellow", "black", "gray", "blue", "aqua", "purple", "orange"];
+var keys_pressed = {};
 var ctx = canvas.getContext("2d");
 const UPDATE_RATE = 5; // updates each 5ms
 const PLAYER_RADIUS = 10;
@@ -21,19 +22,11 @@ socket.on("data", (my_data) => {
 })
 
 window.onkeydown = (ev) => {
-    if (ev.key === "s") {
-        player.y += 5;
-    }
-    if (ev.key === "w") {
-        player.y -= 5;
-    } 
-    if (ev.key === "d") {
-        player.x += 5;
-    }
-    if (ev.key === "a") {
-        player.x -= 5;
-    }
+    keys_pressed[ev.key] = true;
 };
+window.onkeyup = (ev) => {
+    keys_pressed[ev.key] = false;
+}
 
 function draw_text(text, x, y) {
     ctx.fillStyle = "black";
@@ -67,11 +60,28 @@ function draw() {
 }
 
 
+function update() {
+    if (keys_pressed["s"]) {
+        player.y += 1;
+    }
+    if (keys_pressed["w"]) {
+        player.y -= 1;
+    } 
+    if (keys_pressed["d"]) {
+        player.x += 1;
+    }
+    if (keys_pressed["a"]) {
+        player.x -= 1;
+    }
+}
+
+
 
 (async function main() {
     for (;;) {
         await sleep(UPDATE_RATE);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        update();
         draw();
         socket.emit("get-data", socket.id, player);
     }
