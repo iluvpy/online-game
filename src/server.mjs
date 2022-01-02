@@ -16,8 +16,6 @@ var player_data = {};
 
 //Whenever someone connects this gets executed
 io.on('connection', socket => {
-    console.log('A user connected');
- 
     //Whenever someone disconnects this piece of code executed
     socket.on('disconnect', () => {
        delete player_data[socket.id]
@@ -27,7 +25,7 @@ io.on('connection', socket => {
         //console.log(`data pulled! id: ${id}, p data: ${data}`);
         if (id !== null) {
             if (!(id in player_data)) {
-                console.log(`new user with id ${id} joined!`);
+                console.log(`${id} connected!`);
             }
             
                 player_data[id] = data;

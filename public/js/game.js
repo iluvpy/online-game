@@ -12,6 +12,8 @@ const PLAYER_RADIUS = 10;
 const PLAYER_SPEED = 200;
 var keys_pressed = {};
 var ctx = canvas.getContext("2d");
+ctx.canvas.width = 1280;
+ctx.canvas.height = 720;
 var player_data = null;
 var player = {
     x: 100,
@@ -53,10 +55,6 @@ function draw_player(player_obj) {
 }
 
 function draw() {
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-
-    
     draw_text(player.name, player.x-5, player.y-10);
     draw_player(player);
 
@@ -74,16 +72,20 @@ function draw() {
 
 function update(delta_time) {
     if (keys_pressed["s"]) {
-        player.y += PLAYER_SPEED * delta_time;
+        if (player.y+PLAYER_RADIUS*2 < ctx.canvas.height)
+            player.y += PLAYER_SPEED * delta_time;
     }
     if (keys_pressed["w"]) {
-        player.y -= PLAYER_SPEED * delta_time;
+        if (player.y > 0)
+            player.y -= PLAYER_SPEED * delta_time;
     } 
     if (keys_pressed["d"]) {
-        player.x += PLAYER_SPEED * delta_time;
+        if (player.x+PLAYER_RADIUS*2 < ctx.canvas.width)
+            player.x += PLAYER_SPEED * delta_time;
     }
     if (keys_pressed["a"]) {
-        player.x -= PLAYER_SPEED * delta_time;
+        if (player.x > 0)
+            player.x -= PLAYER_SPEED * delta_time;
     }
 }
 
