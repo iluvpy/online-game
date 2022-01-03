@@ -32,6 +32,14 @@ class Renderer {
         this.ctx.rotate(-radians);
         this.ctx.translate(-x, -y);
     }
+
+    get_width() {
+        return this.ctx.canvas.width;
+    }
+    
+    get_height() {
+        return this.ctx.canvas.height;
+    }
 }
 
 export default Renderer;
