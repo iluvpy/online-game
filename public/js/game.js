@@ -1,21 +1,22 @@
-import { rotate, sleep } from "./util.js";
+import { is_ontop, rotate, sleep } from "./util.js";
 import * as consts from "./constants.js";
 import player from "./player.js";
 import Renderer from "./renderer.js";
+import { Point } from "./shapes.js";
 
 const socket = io(window.location.href);
 // html elems
 const canvas = document.getElementById("display");
 const username_inp = document.getElementById("name-inp");
-const rifle_image = document.getElementById("rifle");
 // game constants
 
 // variables
 var keys_pressed = {};
 var last_bullet_shot = 0;
+var weapon_image = document.getElementById("rifle");
 var ctx = canvas.getContext("2d");
-ctx.canvas.width = 1280;
-ctx.canvas.height = 720;
+ctx.canvas.width = consts.CANVAS_WIDTH;
+ctx.canvas.height = consts.CANVAS_HEIGHT;
 var player_data = null;
 var alive = true;
 username_inp.value = player.name;
@@ -45,35 +46,38 @@ function draw_player(player_obj) {
     render.draw_circle(player_obj.x, player_obj.y, consts.PLAYER_RADIUS, player_obj.color)
 }
 
-function draw_player_data(player) {
+function draw_player_data(player_obj, is_client) {
     // draw player name
     render.draw_text(
-        player.name, 
-        player.x-consts.PLAYER_RADIUS, 
-        player.y-consts.PLAYER_RADIUS);
+        player_obj.name, 
+        player_obj.x-consts.PLAYER_RADIUS, 
+        player_obj.y-consts.PLAYER_RADIUS);
     // draw player body 
-    draw_player(player); 
+    draw_player(player_obj); 
     // draw player weapon
     render.draw_image(
-        rifle_image,
-        player.x+consts.WEAPON_DISTANCE.x, 
-        player.y+consts.WEAPON_DISTANCE.y, 
-        player.weapon_angle);
+        weapon_image,
+        player_obj.x+consts.WEAPON_DISTANCE.x, 
+        player_obj.y+consts.WEAPON_DISTANCE.y, 
+        player_obj.weapon_angle);
     
     // draw bullets
-    player.bullets.forEach(bullet => {
+    player_obj.bullets.forEach(bullet => {
         render.draw_circle(bullet.x, bullet.y, consts.BULLET_RADIUS, "black");
+        if (is_ontop(bullet.x, bullet.y, player_obj.x, player_obj.y, consts.PLAYER_RADIUS*2, consts.PLAYER_RADIUS*2)) {
+            console.log("you should be dead...");
+        }
     });
 }
 
 function draw() {
     
-    draw_player_data(player);
+    draw_player_data(player, true);
 
     for (var player_id in player_data) {
         if (player_id !== socket.id) {
             const other_player = player_data[player_id];
-            draw_player_data(other_player);
+            draw_player_data(other_player, false);
         }
     }
     if (player_data !== null) {
@@ -108,9 +112,9 @@ function handle_keys(delta_time) {
         // add bullet
         const now = new Date().getTime();
         if (now - last_bullet_shot > consts.BULLET_INTERVAL) {
-            var b_x = player.x+consts.PLAYER_RADIUS;
+            var b_x = player.x+consts.PLAYER_RADIUS*2;
             var b_y = player.y;
-            var new_pos = rotate({x: b_x+consts.BULLET_SPEED, y: b_y+consts.BULLET_SPEED}, {x: b_x, y: b_y}, player.weapon_angle+consts.WEAPON_IDLE_ANGLE);
+            var new_pos = rotate(new Point(b_x+consts.BULLET_SPEED, b_y+consts.BULLET_SPEED), new Point(b_x, b_y), player.weapon_angle+consts.WEAPON_IDLE_ANGLE);
             player.bullets.push({
                 x: b_x, 
                 y: b_y,
@@ -131,8 +135,8 @@ function handle_keys(delta_time) {
 function handle_bullets(delta_time) {
     var i = 0;
     player.bullets.forEach(bullet => {
-            bullet.x += bullet.x_speed * delta_time;
-            bullet.y += bullet.y_speed * delta_time;   
+        bullet.x += bullet.x_speed * delta_time;
+        bullet.y += bullet.y_speed * delta_time;   
         i++;
     });
     player.bullets = player.bullets.filter(bullet => !(bullet.x > render.get_width() || bullet.x < 0 || bullet.y > render.get_height() || bullet.y < 0));  
@@ -156,6 +160,10 @@ window.onload = async () => {
         // draw here
         if (alive) {
             update(delta_time);
+        } 
+        else {
+            alert("you died");
+            alive = true;
         }
         draw();
 

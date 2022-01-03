@@ -17,7 +17,7 @@ class Renderer {
 
     draw_circle(x, y, radius, color) {
         this.ctx.beginPath();
-        this.ctx.arc(x+radius, y+radius, radius, 0, 2 * Math.PI);
+        this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
         this.ctx.fillStyle = color;
         this.ctx.fill(); 
     }
@@ -36,7 +36,7 @@ class Renderer {
     get_width() {
         return this.ctx.canvas.width;
     }
-    
+
     get_height() {
         return this.ctx.canvas.height;
     }
