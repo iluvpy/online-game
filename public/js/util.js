@@ -15,8 +15,13 @@ function get_random_choice(array) {
 }
   
 
+function to_radians(degrees) {
+    return degrees * (Math.PI/180);
+}
+
 export { 
     sleep,
     get_random_choice,
-    get_random_int
+    get_random_int,
+    to_radians
 };
