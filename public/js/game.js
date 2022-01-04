@@ -5,6 +5,7 @@ import Renderer from "./renderer.js";
 import { Point } from "./shapes.js";
 import MovementManager from "./movement.js";
 
+
 const socket = io(window.location.href);
 // html elems
 const canvas = document.getElementById("display");

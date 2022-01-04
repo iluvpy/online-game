@@ -29,11 +29,21 @@ function rotate(point, origin ,angle) {
     }
 }
 
+function get_request(url, callback) {
+    var xml_http = new XMLHttpRequest();
+    xml_http.onreadystatechange = () => { 
+        if (xml_http.readyState == 4 && xml_http.status == 200)
+            callback(xml_http.responseText);
+    }
+    xml_http.open("GET", url, true); // true for asynchronous 
+    xml_http.send(null);
+}
 
 export { 
     sleep,
     get_random_choice,
     get_random_int,
     to_radians,
-    rotate
+    rotate,
+    get_request
 };
