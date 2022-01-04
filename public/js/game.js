@@ -23,6 +23,7 @@ username_inp.value = player.name;
 
 const render = new Renderer(ctx);
 
+// pull data from server
 socket.on("data", (my_data) => {
     player_data = my_data;
 })
@@ -43,7 +44,7 @@ username_inp.addEventListener("input", (ev) => {
 
 
 function draw_player(player_obj) {
-    render.draw_circle(player_obj.x, player_obj.y, consts.PLAYER_RADIUS, player_obj.color)
+    render.draw_circle(player_obj.x, player_obj.y, consts.PLAYER_RADIUS, player_obj.color);
 }
 
 function draw_player_data(player_obj, is_client) {
@@ -64,8 +65,12 @@ function draw_player_data(player_obj, is_client) {
     // draw bullets
     player_obj.bullets.forEach(bullet => {
         render.draw_circle(bullet.x, bullet.y, consts.BULLET_RADIUS, "black");
-        if (is_ontop(bullet.x, bullet.y, player_obj.x, player_obj.y, consts.PLAYER_RADIUS*2, consts.PLAYER_RADIUS*2)) {
-            console.log("you should be dead...");
+        // if client was hit by a bullet that was shot by another player
+        if (
+            bullet.x >= player.x && bullet.x <= player.x+consts.PLAYER_RADIUS*2 &&
+            bullet.y >= player.y && bullet.y <= player.y+consts.PLAYER_RADIUS*2 && !is_client
+        ) {
+            alive = false;
         }
     });
 }
@@ -162,8 +167,7 @@ window.onload = async () => {
             update(delta_time);
         } 
         else {
-            alert("you died");
-            alive = true;
+            render.draw_center_text("You died", "48px serif");
         }
         draw();
 

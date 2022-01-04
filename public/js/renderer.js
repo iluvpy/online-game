@@ -15,11 +15,24 @@ class Renderer {
         this.ctx.fillText(text, x, y);
     }
 
+    draw_center_text(text, font="11px serif", color = "black") {
+        this.ctx.fillStyle = color;
+        this.ctx.font = font;
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(text, this.get_width()/2, this.get_height()/2);
+        this.ctx.textAlign = "";
+    }
+
     draw_circle(x, y, radius, color) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
         this.ctx.fillStyle = color;
         this.ctx.fill(); 
+    }
+
+    draw_rect(x, y, w, h, color) {
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(x, y, w, h);
     }
 
     draw_image(image, x, y, angle=0) {
