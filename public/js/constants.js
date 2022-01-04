@@ -1,9 +1,10 @@
 const MAX_NAME_SIZE = 20;
 const UPDATE_RATE = 1; // rate at which the game updates
 const PLAYER_RADIUS = 10;
-const PLAYER_SPEED = 300;
+const PLAYER_SPEED = 30;
+const PLAYER_FRICTION = 0.95;
 const WEAPON_ANGLE_SPEED = 360;
-const COLORS = ["green", "red", "yellow", "black", "gray", "blue", "aqua", "purple", "orange"];
+const COLORS = ["green", "red", "yellow", "black", "gray", "blue", "purple", "orange"];
 const WEAPONS = ["/img/rifle.png"];
 const WEAPON_IDLE_ANGLE = 90;
 const WEAPON_DISTANCE = {
@@ -15,6 +16,7 @@ const BULLET_INTERVAL = 200; // you can shoot only 1 bullet each BULLET_INTERVAL
 const BULLET_SPEED = 350;
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 720;
+const BACKGROUND_COLOR = "#4f555c";
 
 export {
     MAX_NAME_SIZE,
@@ -29,5 +31,7 @@ export {
     BULLET_SPEED,
     WEAPON_IDLE_ANGLE,
     CANVAS_HEIGHT,
-    CANVAS_WIDTH
+    CANVAS_WIDTH,
+    BACKGROUND_COLOR,
+    PLAYER_FRICTION
 };

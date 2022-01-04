@@ -1,8 +1,9 @@
-import { is_ontop, rotate, sleep } from "./util.js";
+import { rotate, sleep } from "./util.js";
 import * as consts from "./constants.js";
 import player from "./player.js";
 import Renderer from "./renderer.js";
 import { Point } from "./shapes.js";
+import MovementManager from "./movement.js";
 
 const socket = io(window.location.href);
 // html elems
@@ -20,7 +21,7 @@ ctx.canvas.height = consts.CANVAS_HEIGHT;
 var player_data = null;
 var alive = true;
 username_inp.value = player.name;
-
+const player_movement = new MovementManager(player.x, player.y);
 const render = new Renderer(ctx);
 
 // pull data from server
@@ -52,7 +53,7 @@ function draw_player_data(player_obj, is_client) {
     render.draw_text(
         player_obj.name, 
         player_obj.x-consts.PLAYER_RADIUS, 
-        player_obj.y-consts.PLAYER_RADIUS);
+        player_obj.y-consts.PLAYER_RADIUS*2);
     // draw player body 
     draw_player(player_obj); 
     // draw player weapon
@@ -76,8 +77,9 @@ function draw_player_data(player_obj, is_client) {
 }
 
 function draw() {
-    
-    draw_player_data(player, true);
+    if (alive) {
+        draw_player_data(player, true);
+    }
 
     for (var player_id in player_data) {
         if (player_id !== socket.id) {
@@ -86,22 +88,22 @@ function draw() {
         }
     }
     if (player_data !== null) {
-        render.draw_text(`players: ${Object.keys(player_data).length}`, 10, 20, "16px serif");
+        render.draw_text(`Players: ${Object.keys(player_data).length}`, 10, 20, "16px serif");
     }
 }
 
 function handle_keys(delta_time) {
     if (keys_pressed["s"] && player.y+consts.PLAYER_RADIUS*2 < ctx.canvas.height) {
-        player.y += consts.PLAYER_SPEED * delta_time;
+        player_movement.move_down();
     }
     if (keys_pressed["w"] && player.y > 0) {
-        player.y -= consts.PLAYER_SPEED * delta_time;
+        player_movement.move_up();
     } 
     if (keys_pressed["d"] && player.x+consts.PLAYER_RADIUS*2 < ctx.canvas.width) {
-        player.x += consts.PLAYER_SPEED * delta_time;
+        player_movement.move_right();
     }
     if (keys_pressed["a"] && player.x > 0) {
-        player.x -= consts.PLAYER_SPEED * delta_time;
+        player_movement.move_left();
     }
     if (keys_pressed["ArrowRight"]) {
         player.weapon_angle += consts.WEAPON_ANGLE_SPEED * delta_time;
@@ -160,8 +162,8 @@ window.onload = async () => {
     var finish = 0;
     for (;;) {
         start = new Date().getTime();
-        socket.emit("get-data", socket.id, player);
-        render.clear();
+        socket.emit("get-data", player);
+        render.clear(consts.BACKGROUND_COLOR);
         // draw here
         if (alive) {
             update(delta_time);
@@ -169,6 +171,10 @@ window.onload = async () => {
         else {
             render.draw_center_text("You died", "48px serif");
         }
+        player_movement.update(delta_time, render.get_width(), render.get_height());
+        var new_pos = player_movement.get_coords();
+        player.x = new_pos.x;
+        player.y = new_pos.y;
         draw();
 
         await sleep(consts.UPDATE_RATE);

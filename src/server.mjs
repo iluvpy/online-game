@@ -21,7 +21,8 @@ io.on('connection', socket => {
        delete player_data[socket.id]
     });
 
-    socket.on("get-data", (id, data) => {
+    socket.on("get-data", (data) => {
+        const id = socket.id;
         //console.log(`data pulled! id: ${id}, p data: ${data}`);
         if (id !== null) {
             if (!(id in player_data)) {
@@ -33,7 +34,12 @@ io.on('connection', socket => {
         socket.emit("data", player_data);
         
     });
+
+    socket.on("death", () => {
+        delete player_data[id];
+    });
 });
+
 
 app.use(express.static("public"));
 

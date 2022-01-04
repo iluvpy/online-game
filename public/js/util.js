@@ -29,15 +29,11 @@ function rotate(point, origin ,angle) {
     }
 }
 
-function is_ontop(x, y, x2, y2, w, h) {
-    return x >= x2 && x <= x2+w && y >= y2 && y <= y2+h;
-}
 
 export { 
     sleep,
     get_random_choice,
     get_random_int,
     to_radians,
-    rotate,
-    is_ontop
+    rotate
 };

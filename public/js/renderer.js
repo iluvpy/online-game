@@ -5,17 +5,18 @@ class Renderer {
         this.ctx = ctx;
     }
 
-    clear() {
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    clear(background_color) {
+        this.ctx.fillStyle = background_color
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
 
-    draw_text(text, x, y, font = "11px serif", color = "black") {
+    draw_text(text, x, y, font = "11px serif", color = "white") {
         this.ctx.fillStyle = color;
         this.ctx.font = font;
         this.ctx.fillText(text, x, y);
     }
 
-    draw_center_text(text, font="11px serif", color = "black") {
+    draw_center_text(text, font="11px serif", color = "white") {
         this.ctx.fillStyle = color;
         this.ctx.font = font;
         this.ctx.textAlign = "center";
