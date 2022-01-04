@@ -1,5 +1,9 @@
 
 
+function get_random_player_name() {
+    return `player${get_random_int(0, 100)}`;
+}
+
 function sleep(ms) {
     return new Promise(res => {setTimeout(res, ms)});
 }
@@ -39,11 +43,13 @@ function get_request(url, callback) {
     xml_http.send(null);
 }
 
+
 export { 
     sleep,
     get_random_choice,
     get_random_int,
     to_radians,
     rotate,
-    get_request
+    get_request,
+    get_random_player_name
 };

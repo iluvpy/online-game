@@ -1,9 +1,10 @@
-import { rotate, sleep } from "./util.js";
+import { get_random_int, get_random_player_name, rotate, sleep } from "./util.js";
 import * as consts from "./constants.js";
 import player from "./player.js";
 import Renderer from "./renderer.js";
 import { Point } from "./shapes.js";
 import MovementManager from "./movement.js";
+import html_events from "./events.js";
 
 
 const socket = io(window.location.href);
@@ -15,7 +16,7 @@ const username_inp = document.getElementById("name-inp");
 // variables
 var keys_pressed = {};
 var last_bullet_shot = 0;
-var weapon_image = document.getElementById("rifle");
+var weapon_image = document.getElementById("weapon");
 var ctx = canvas.getContext("2d");
 ctx.canvas.width = consts.CANVAS_WIDTH;
 ctx.canvas.height = consts.CANVAS_HEIGHT;
@@ -39,9 +40,10 @@ window.onkeyup = (ev) => {
 
 username_inp.addEventListener("input", (ev) => {
     keys_pressed[ev.data] = false; // dont allow key presses while typing name
-    if (username_inp.value.length <= consts.MAX_NAME_SIZE)
+    if (username_inp.value.length <= consts.MAX_NAME_SIZE) {
         player.name = username_inp.value;
-})
+    }
+});
 
 
 
@@ -150,14 +152,23 @@ function handle_bullets(delta_time) {
     player.bullets = player.bullets.filter(bullet => !(bullet.x > render.get_width() || bullet.x < 0 || bullet.y > render.get_height() || bullet.y < 0));  
 }
 
+function handle_misc() {
+    if (username_inp.value === "") {
+        username_inp.value = get_random_player_name();
+        player.name = username_inp.value;
+    }
+}
+
 function update(delta_time) {
     handle_keys(delta_time);
     handle_bullets(delta_time);
+    handle_misc();
 }
 
 
 
 window.onload = async () => {
+    html_events();
     var delta_time = 0.0;
     var start = 0;
     var finish = 0;

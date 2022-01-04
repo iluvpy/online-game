@@ -13,13 +13,27 @@ body {
     display: block;
     margin-top: 2%;
     margin-left: 3%;
+    height: 35px;
+    width: 10%;
+    text-align: center;
+    border-radius: 50px;
+    border: none;
+    background-color: #4e565d;
+    color: white;
+    outline: none;
 }
 
-#rifle {
+
+#weapon {
     position: absolute;
     margin-top: 5%;
     margin-left: 2%;
     padding: 10px;
     background-color: #373c41;
-    border: solid 2px #4e565d;
+    border: solid 6px #4e565d;
+    transition: 300ms all ease-in-out;
+}
+
+#weapon:hover {
+    border: solid 6px #657079;
 }
