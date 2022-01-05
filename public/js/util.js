@@ -50,7 +50,9 @@ function get_player_image(src) {
 }
 
 function void_function() {}
-
+function get_time() {
+    return new Date().getTime();
+}
 export { 
     sleep,
     get_random_choice,
@@ -60,5 +62,6 @@ export {
     get_request,
     get_random_player_name,
     get_player_image,
-    void_function
+    void_function,
+    get_time
 };

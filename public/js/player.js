@@ -11,7 +11,8 @@ function generate_player() {
         weapon_src: WEAPONS[0],
         bullets: [],
         alive: true,
-        died: 0
+        died: 0,
+        respawn_protection: false
     };
 }
 export default generate_player();

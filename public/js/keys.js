@@ -8,7 +8,7 @@ import {
     CANVAS_HEIGHT
 } from "./constants.js";
 
-import { rotate } from "./util.js";
+import { get_time, rotate } from "./util.js";
 
 import { Point } from "./shapes.js";
 
@@ -51,7 +51,7 @@ export default class KeysHandler {
         // space
         if (this.keys_pressed[" "]) {
             // add bullet
-            const now = new Date().getTime();
+            const now = get_time();
             if (now - this.last_bullet_shot > BULLET_INTERVAL) {
                 var b_x = player.x+PLAYER_RADIUS*2;
                 var b_y = player.y;

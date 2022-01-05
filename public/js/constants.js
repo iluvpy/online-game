@@ -23,6 +23,7 @@ const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 720;
 const RESPAWN_TIME = 3000; // it takes 3 seconds to respawn
 const BACKGROUND_COLOR = "#4f555c";
+const RESPAWN_PROT_TIME = 3000; // you are invincible for 3000
 
 export {
     MAX_NAME_SIZE,
@@ -41,5 +42,6 @@ export {
     BACKGROUND_COLOR,
     PLAYER_FRICTION,
     WEAPONS,
-    RESPAWN_TIME
+    RESPAWN_TIME,
+    RESPAWN_PROT_TIME
 };

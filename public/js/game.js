@@ -1,4 +1,4 @@
-import { get_player_image, sleep } from "./util.js";
+import { sleep, get_time } from "./util.js";
 import * as consts from "./constants.js";
 import base_player from "./player.js";
 import Renderer from "./renderer.js";
@@ -15,6 +15,7 @@ const weapon_image = document.getElementById("weapon");
 // variables
 var player = base_player;
 var player_death_time = 0; // when the player died
+var respawn_prot_start_time = 0;
 var ctx = canvas.getContext("2d");
 ctx.canvas.width = consts.CANVAS_WIDTH;
 ctx.canvas.height = consts.CANVAS_HEIGHT;
@@ -31,7 +32,7 @@ window.onload = async () => {
     var start = 0;
     var finish = 0;
     for (;;) {
-        start = new Date().getTime();
+        start = get_time();
         game_socket.update(player);
         render.clear(consts.BACKGROUND_COLOR);
         // draw here
@@ -43,12 +44,10 @@ window.onload = async () => {
         draw();
 
         await sleep(consts.UPDATE_RATE);
-        finish = new Date().getTime();
+        finish = get_time();
         delta_time = (finish - start) / 1000;
     }
 };
-
-
 
 
 username_inp.addEventListener("input", (ev) => {
@@ -72,12 +71,13 @@ function draw() {
     render.draw_text(`Players: ${game_socket.number_of_players()}`, 10, 20, "16px serif");
 
     if (!player.alive) {
-        var now = new Date().getTime();
+        var now = get_time();
         var diff = now - player_death_time;
         var text = `Respawn in ${Math.floor((consts.RESPAWN_TIME-diff)/1000)}`  
         render.draw_center_text(text, "48px serif");
         if (diff > consts.RESPAWN_TIME) {
             player.alive = true;
+            respawn_prot_start_time = now;
         }
     }
 
@@ -87,6 +87,7 @@ function draw() {
 
 function handle_misc() {
     player.weapon_src = weapon_image.src;
+    player.respawn_protection = has_respawn_prot();
 }
 
 function update(delta_time) {
@@ -97,10 +98,16 @@ function update(delta_time) {
     handle_misc();
 }
 
+function has_respawn_prot() {
+    var now = get_time();
+    return now - respawn_prot_start_time < consts.RESPAWN_PROT_TIME;
+}
+
 function die() {
-    if (player.alive) {
+    var now = get_time();
+    if (player.alive && !player.respawn_protection) {
         player.alive = false;
-        player_death_time = new Date().getTime();
+        player_death_time = now;
         player.died++;
     }
 }
