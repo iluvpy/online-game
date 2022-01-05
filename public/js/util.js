@@ -43,6 +43,11 @@ function get_request(url, callback) {
     xml_http.send(null);
 }
 
+function get_player_image(src) {
+    const html_img = new Image();
+    html_img.src = src;
+    return html_img;
+}
 
 export { 
     sleep,
@@ -51,5 +56,6 @@ export {
     to_radians,
     rotate,
     get_request,
-    get_random_player_name
+    get_random_player_name,
+    get_player_image
 };

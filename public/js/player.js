@@ -1,5 +1,5 @@
 import { get_random_choice, get_random_int, get_random_player_name } from "./util.js";
-import {CANVAS_HEIGHT, CANVAS_WIDTH, COLORS} from "./constants.js";
+import {CANVAS_HEIGHT, CANVAS_WIDTH, COLORS, WEAPONS} from "./constants.js";
 
 function generate_player() {
     return {
@@ -8,6 +8,7 @@ function generate_player() {
         color: get_random_choice(COLORS),
         name: get_random_player_name(),
         weapon_angle: 0,
+        weapon_src: WEAPONS[0],
         bullets: [],
         alive: true
     };

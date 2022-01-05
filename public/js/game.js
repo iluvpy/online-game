@@ -1,4 +1,4 @@
-import { rotate, sleep } from "./util.js";
+import { get_player_image, rotate, sleep } from "./util.js";
 import * as consts from "./constants.js";
 import base_player, { generate_player } from "./player.js";
 import Renderer from "./renderer.js";
@@ -12,6 +12,7 @@ const socket = io(window.location.href);
 const canvas = document.getElementById("display");
 const username_inp = document.getElementById("name-inp");
 const rip_image = document.getElementById("rip-img");
+const weapon_image = document.getElementById("weapon");
 // game constants
 
 // variables
@@ -19,7 +20,6 @@ var player = base_player;
 var keys_pressed = {};
 var player_death_time = 0; // when the player died
 var last_bullet_shot = 0;
-var weapon_image = document.getElementById("weapon");
 var ctx = canvas.getContext("2d");
 ctx.canvas.width = consts.CANVAS_WIDTH;
 ctx.canvas.height = consts.CANVAS_HEIGHT;
@@ -73,7 +73,7 @@ function draw_player_data(player_obj, is_client) {
     // draw player weapon
     if (player_obj.alive) { // dead people dont have a weapon
         render.draw_image(
-            weapon_image,
+            get_player_image(player_obj.weapon_src),
             player_obj.x+consts.WEAPON_DISTANCE.x, 
             player_obj.y+consts.WEAPON_DISTANCE.y, 
             player_obj.weapon_angle);
@@ -180,7 +180,7 @@ function handle_bullets(delta_time) {
 }
 
 function handle_misc() {
-    
+    player.weapon_src = weapon_image.src;
 }
 
 function update(delta_time) {
