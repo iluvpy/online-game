@@ -38,8 +38,6 @@ window.onload = async () => {
         render.clear(consts.BACKGROUND_COLOR);
         // draw here
         update(delta_time);
-
-
         player_movement.update(delta_time, render.get_width(), render.get_height());
         var new_pos = player_movement.get_coords();
         player.x = new_pos.x;
@@ -139,10 +137,7 @@ function draw() {
         var text = `Respawn in ${Math.floor((consts.RESPAWN_TIME-diff)/1000)}`  
         render.draw_center_text(text, "48px serif");
         if (diff > consts.RESPAWN_TIME) {
-            var name = player.name;
             player.alive = true;
-            player = generate_player();
-            player.name = name;
         }
     }
 
