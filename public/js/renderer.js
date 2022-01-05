@@ -1,4 +1,5 @@
 import { to_radians } from "./util.js";
+import { PLAYER_RADIUS } from "./constants.js";
 
 class Renderer {
     constructor(ctx) {
@@ -46,6 +47,20 @@ class Renderer {
         this.ctx.rotate(-radians);
         this.ctx.translate(-x, -y);
     }
+
+    draw_player(player_obj, death_image) {
+        if (player_obj.alive) {
+            this.draw_circle(player_obj.x, player_obj.y, PLAYER_RADIUS, player_obj.color);
+        }
+        else {
+            this.draw_image(
+                death_image,
+                player_obj.x,
+                player_obj.y
+            );
+        }
+    }
+    
 
     get_width() {
         return this.ctx.canvas.width;
