@@ -11,17 +11,18 @@ const socket = io(window.location.href);
 // html elems
 const canvas = document.getElementById("display");
 const username_inp = document.getElementById("name-inp");
+const rip_image = document.getElementById("rip-img");
 // game constants
 
 // variables
 var keys_pressed = {};
+var player_death_time = 0; // when the player died
 var last_bullet_shot = 0;
 var weapon_image = document.getElementById("weapon");
 var ctx = canvas.getContext("2d");
 ctx.canvas.width = consts.CANVAS_WIDTH;
 ctx.canvas.height = consts.CANVAS_HEIGHT;
 var player_data = null;
-var alive = true;
 username_inp.value = player.name;
 const player_movement = new MovementManager(player.x, player.y);
 const render = new Renderer(ctx);
@@ -48,23 +49,35 @@ username_inp.addEventListener("input", (ev) => {
 
 
 function draw_player(player_obj) {
-    render.draw_circle(player_obj.x, player_obj.y, consts.PLAYER_RADIUS, player_obj.color);
+    if (player_obj.alive) {
+        render.draw_circle(player_obj.x, player_obj.y, consts.PLAYER_RADIUS, player_obj.color);
+    }
+    else {
+        render.draw_image(
+            rip_image,
+            player_obj.x,
+            player_obj.y
+        );
+    }
 }
 
 function draw_player_data(player_obj, is_client) {
     // draw player name
     render.draw_text(
-        player_obj.name, 
+        player_obj.alive ? player_obj.name : "DEAD", 
         player_obj.x-consts.PLAYER_RADIUS, 
         player_obj.y-consts.PLAYER_RADIUS*2);
     // draw player body 
     draw_player(player_obj); 
     // draw player weapon
-    render.draw_image(
-        weapon_image,
-        player_obj.x+consts.WEAPON_DISTANCE.x, 
-        player_obj.y+consts.WEAPON_DISTANCE.y, 
-        player_obj.weapon_angle);
+    if (player_obj.alive) { // dead people dont have a weapon
+        render.draw_image(
+            weapon_image,
+            player_obj.x+consts.WEAPON_DISTANCE.x, 
+            player_obj.y+consts.WEAPON_DISTANCE.y, 
+            player_obj.weapon_angle);
+    }
+
     
     // draw bullets
     player_obj.bullets.forEach(bullet => {
@@ -74,15 +87,15 @@ function draw_player_data(player_obj, is_client) {
             bullet.x >= player.x && bullet.x <= player.x+consts.PLAYER_RADIUS*2 &&
             bullet.y >= player.y && bullet.y <= player.y+consts.PLAYER_RADIUS*2 && !is_client
         ) {
-            alive = false;
+            die();
         }
     });
 }
 
 function draw() {
-    if (alive) {
-        draw_player_data(player, true);
-    }
+    
+    draw_player_data(player, true);
+    
 
     for (var player_id in player_data) {
         if (player_id !== socket.id) {
@@ -153,10 +166,7 @@ function handle_bullets(delta_time) {
 }
 
 function handle_misc() {
-    if (username_inp.value === "") {
-        username_inp.value = get_random_player_name();
-        player.name = username_inp.value;
-    }
+    
 }
 
 function update(delta_time) {
@@ -165,7 +175,13 @@ function update(delta_time) {
     handle_misc();
 }
 
+function die() {
+    if (player.alive) {
+        player.alive = false;
+        player_death_time = new Date().getTime();
+    }
 
+}
 
 window.onload = async () => {
     html_events();
@@ -177,11 +193,17 @@ window.onload = async () => {
         socket.emit("get-data", player);
         render.clear(consts.BACKGROUND_COLOR);
         // draw here
-        if (alive) {
+        if (player.alive) {
             update(delta_time);
         } 
         else {
-            render.draw_center_text("You died", "48px serif");
+            var now = new Date().getTime();
+            var diff = now - player_death_time;
+            var text = `Respawn in ${Math.floor((consts.RESPAWN_TIME-diff)/1000)}`  
+            render.draw_center_text(text, "48px serif");
+            if (diff > consts.RESPAWN_TIME) {
+                player.alive = true;
+            }
         }
         player_movement.update(delta_time, render.get_width(), render.get_height());
         var new_pos = player_movement.get_coords();

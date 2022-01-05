@@ -8,7 +8,8 @@ function generate_player() {
         color: get_random_choice(COLORS),
         name: get_random_player_name(),
         weapon_angle: 0,
-        bullets: []
+        bullets: [],
+        alive: true
     };
 }
 export default generate_player();

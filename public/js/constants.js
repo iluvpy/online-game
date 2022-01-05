@@ -16,6 +16,7 @@ const BULLET_INTERVAL = 200; // you can shoot only 1 bullet each BULLET_INTERVAL
 const BULLET_SPEED = 350;
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 720;
+const RESPAWN_TIME = 3000; // it takes 3 seconds to respawn
 const BACKGROUND_COLOR = "#4f555c";
 
 export {
@@ -34,5 +35,6 @@ export {
     CANVAS_WIDTH,
     BACKGROUND_COLOR,
     PLAYER_FRICTION,
-    WEAPONS
+    WEAPONS,
+    RESPAWN_TIME
 };

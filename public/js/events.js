@@ -5,17 +5,21 @@ export default function html_events() {
     const weapon_image = document.getElementById("weapon");
     
     weapon_image.addEventListener("click", (ev) => {
+        console.log("image was clicked!");
         const src = weapon_image.src;
         var i = 0;
         for (var weapon_src of WEAPONS) {
-            if (src.includes(weapon_src)) return;
+            if (src.includes(weapon_src)) break;
             i++;
         }
-        if (i < WEAPONS.length) {
+        console.log(`i: ${i}`);
+        if (i < WEAPONS.length-1) {
+            console.log("set image to next");
             weapon_image.src = WEAPONS[i+1];
         } 
         else {
-            weapon_src.src = WEAPONS[0];
+            console.log("set image to start");
+            weapon_image.src = WEAPONS[0];
         }
     });
 }

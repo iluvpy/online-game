@@ -6,6 +6,7 @@ import path from "path";
 const app = express();
 const server = http.Server(app);
 const port = 3000;
+const host = "localhost";
 const io = new Server({
     cors: { origin: "*"}
 });
@@ -34,10 +35,6 @@ io.on('connection', socket => {
         socket.emit("data", player_data);
         
     });
-
-    socket.on("death", () => {
-        delete player_data[id];
-    });
 });
 
 
@@ -47,6 +44,6 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(process.cwd(), "index.html"));
 });
 
-server.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+server.listen(port, host, () => {
+    console.log(`Example app listening at http://${host}:${port}`);
 });
