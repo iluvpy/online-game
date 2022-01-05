@@ -5,7 +5,12 @@ const PLAYER_SPEED = 30;
 const PLAYER_FRICTION = 0.95;
 const WEAPON_ANGLE_SPEED = 360;
 const COLORS = ["green", "red", "yellow", "black", "gray", "blue", "purple", "orange"];
-const WEAPONS = ["/img/ak47-model1.png", "/img/ak47-model2.png"];
+const WEAPONS = [
+    "/img/ak47-model1.png", 
+    "/img/ak47-model2.png", 
+    "/img/assault-rifle-model1.png",
+    "/img/assault-rifle-model2.png",
+    "/img/assault-rifle-model3.png"];
 const WEAPON_IDLE_ANGLE = 90;
 const WEAPON_DISTANCE = {
     x: 2*PLAYER_RADIUS,

@@ -1,6 +1,6 @@
-import { get_random_int, get_random_player_name, rotate, sleep } from "./util.js";
+import { rotate, sleep } from "./util.js";
 import * as consts from "./constants.js";
-import player from "./player.js";
+import base_player, { generate_player } from "./player.js";
 import Renderer from "./renderer.js";
 import { Point } from "./shapes.js";
 import MovementManager from "./movement.js";
@@ -15,6 +15,7 @@ const rip_image = document.getElementById("rip-img");
 // game constants
 
 // variables
+var player = base_player;
 var keys_pressed = {};
 var player_death_time = 0; // when the player died
 var last_bullet_shot = 0;
@@ -84,8 +85,8 @@ function draw_player_data(player_obj, is_client) {
         render.draw_circle(bullet.x, bullet.y, consts.BULLET_RADIUS, "black");
         // if client was hit by a bullet that was shot by another player
         if (
-            bullet.x >= player.x && bullet.x <= player.x+consts.PLAYER_RADIUS*2 &&
-            bullet.y >= player.y && bullet.y <= player.y+consts.PLAYER_RADIUS*2 && !is_client
+            bullet.x >= player.x-consts.PLAYER_RADIUS && bullet.x <= player.x+consts.PLAYER_RADIUS*2 &&
+            bullet.y >= player.y-consts.PLAYER_RADIUS && bullet.y <= player.y+consts.PLAYER_RADIUS*2 && !is_client
         ) {
             die();
         }
@@ -106,6 +107,19 @@ function draw() {
     if (player_data !== null) {
         render.draw_text(`Players: ${Object.keys(player_data).length}`, 10, 20, "16px serif");
     }
+    if (!player.alive) {
+        var now = new Date().getTime();
+        var diff = now - player_death_time;
+        var text = `Respawn in ${Math.floor((consts.RESPAWN_TIME-diff)/1000)}`  
+        render.draw_center_text(text, "48px serif");
+        if (diff > consts.RESPAWN_TIME) {
+            var name = player.name;
+            player.alive = true;
+            player = generate_player();
+            player.name = name;
+        }
+    }
+
 }
 
 function handle_keys(delta_time) {
@@ -196,20 +210,13 @@ window.onload = async () => {
         if (player.alive) {
             update(delta_time);
         } 
-        else {
-            var now = new Date().getTime();
-            var diff = now - player_death_time;
-            var text = `Respawn in ${Math.floor((consts.RESPAWN_TIME-diff)/1000)}`  
-            render.draw_center_text(text, "48px serif");
-            if (diff > consts.RESPAWN_TIME) {
-                player.alive = true;
-            }
-        }
+
         player_movement.update(delta_time, render.get_width(), render.get_height());
         var new_pos = player_movement.get_coords();
         player.x = new_pos.x;
         player.y = new_pos.y;
         draw();
+
 
         await sleep(consts.UPDATE_RATE);
         finish = new Date().getTime();

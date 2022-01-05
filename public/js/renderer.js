@@ -20,8 +20,8 @@ class Renderer {
         this.ctx.fillStyle = color;
         this.ctx.font = font;
         this.ctx.textAlign = "center";
-        this.ctx.fillText(text, this.get_width()/2, this.get_height()/2);
-        this.ctx.textAlign = "";
+        this.ctx.fillText(text, this.get_width() / 2, this.get_height() / 2);
+        this.ctx.textAlign = "start";
     }
 
     draw_circle(x, y, radius, color) {
