@@ -13,8 +13,6 @@ const canvas = document.getElementById("display");
 const username_inp = document.getElementById("name-inp");
 const rip_image = document.getElementById("rip-img");
 const weapon_image = document.getElementById("weapon");
-// game constants
-
 // variables
 var player = base_player;
 var keys_pressed = {};
@@ -27,6 +25,34 @@ var player_data = null;
 username_inp.value = player.name;
 const player_movement = new MovementManager(player.x, player.y);
 const render = new Renderer(ctx);
+
+
+window.onload = async () => {
+    html_events();
+    var delta_time = 0.0;
+    var start = 0;
+    var finish = 0;
+    for (;;) {
+        start = new Date().getTime();
+        socket.emit("get-data", player);
+        render.clear(consts.BACKGROUND_COLOR);
+        // draw here
+        update(delta_time);
+
+
+        player_movement.update(delta_time, render.get_width(), render.get_height());
+        var new_pos = player_movement.get_coords();
+        player.x = new_pos.x;
+        player.y = new_pos.y;
+        draw();
+
+
+        await sleep(consts.UPDATE_RATE);
+        finish = new Date().getTime();
+        delta_time = (finish - start) / 1000;
+    }
+};
+
 
 // pull data from server
 socket.on("data", (my_data) => {
@@ -184,7 +210,9 @@ function handle_misc() {
 }
 
 function update(delta_time) {
-    handle_keys(delta_time);
+    if (player.alive) {
+        handle_keys(delta_time);
+    }
     handle_bullets(delta_time);
     handle_misc();
 }
@@ -193,33 +221,9 @@ function die() {
     if (player.alive) {
         player.alive = false;
         player_death_time = new Date().getTime();
+        player.died++;
     }
 
 }
 
-window.onload = async () => {
-    html_events();
-    var delta_time = 0.0;
-    var start = 0;
-    var finish = 0;
-    for (;;) {
-        start = new Date().getTime();
-        socket.emit("get-data", player);
-        render.clear(consts.BACKGROUND_COLOR);
-        // draw here
-        if (player.alive) {
-            update(delta_time);
-        } 
 
-        player_movement.update(delta_time, render.get_width(), render.get_height());
-        var new_pos = player_movement.get_coords();
-        player.x = new_pos.x;
-        player.y = new_pos.y;
-        draw();
-
-
-        await sleep(consts.UPDATE_RATE);
-        finish = new Date().getTime();
-        delta_time = (finish - start) / 1000;
-    }
-};

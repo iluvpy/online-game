@@ -10,7 +10,8 @@ function generate_player() {
         weapon_angle: 0,
         weapon_src: WEAPONS[0],
         bullets: [],
-        alive: true
+        alive: true,
+        died: 0
     };
 }
 export default generate_player();

@@ -11,7 +11,7 @@ const WEAPONS = [
     "/img/assault-rifle-model1.png",
     "/img/assault-rifle-model2.png",
     "/img/assault-rifle-model3.png"];
-const WEAPON_IDLE_ANGLE = 90;
+const WEAPON_IDLE_ANGLE = 95;
 const WEAPON_DISTANCE = {
     x: 2*PLAYER_RADIUS,
     y: PLAYER_RADIUS/2
