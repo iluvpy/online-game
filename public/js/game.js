@@ -11,7 +11,6 @@ import GameSocket from "./socket.js";
 // html elems
 const canvas = document.getElementById("display");
 const username_inp = document.getElementById("name-inp");
-const rip_image = document.getElementById("rip-img");
 const weapon_image = document.getElementById("weapon");
 // variables
 var player = base_player;
@@ -61,12 +60,12 @@ username_inp.addEventListener("input", (ev) => {
 
 function draw() {
     
-    draw_player_data(player, true);
+    render.draw_player_data(player, null, die);
 
     for (var player_id in game_socket.player_data) {
         if (player_id !== game_socket.id()) {
             const other_player = game_socket.player_data[player_id];
-            draw_player_data(other_player, false);
+            render.draw_player_data(other_player, player, null);
         }
     }
     
@@ -84,38 +83,6 @@ function draw() {
 
 }
 
-
-
-function draw_player_data(player_obj, is_client) {
-    // draw player name
-    render.draw_text(
-        player_obj.alive ? player_obj.name : "DEAD", 
-        player_obj.x-consts.PLAYER_RADIUS, 
-        player_obj.y-consts.PLAYER_RADIUS*2);
-    // draw player body 
-    render.draw_player(player_obj, rip_image);
-    // draw player weapon
-    if (player_obj.alive) { // dead people dont have a weapon
-        render.draw_image(
-            get_player_image(player_obj.weapon_src),
-            player_obj.x+consts.WEAPON_DISTANCE.x, 
-            player_obj.y+consts.WEAPON_DISTANCE.y, 
-            player_obj.weapon_angle);
-    }
-
-    
-    // draw bullets
-    player_obj.bullets.forEach(bullet => {
-        render.draw_circle(bullet.x, bullet.y, consts.BULLET_RADIUS, "black");
-        // if client was hit by a bullet that was shot by another player
-        if (
-            bullet.x >= player.x-consts.PLAYER_RADIUS && bullet.x <= player.x+consts.PLAYER_RADIUS*2 &&
-            bullet.y >= player.y-consts.PLAYER_RADIUS && bullet.y <= player.y+consts.PLAYER_RADIUS*2 && !is_client
-        ) {
-            die();
-        }
-    });
-}
 
 
 function handle_misc() {

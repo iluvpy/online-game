@@ -1,9 +1,11 @@
 import { to_radians } from "./util.js";
-import { PLAYER_RADIUS } from "./constants.js";
+import { PLAYER_RADIUS, BULLET_RADIUS, WEAPON_DISTANCE } from "./constants.js";
+import { get_player_image } from "./util.js";
 
 class Renderer {
     constructor(ctx) {
         this.ctx = ctx;
+        this.death_image = document.getElementById("death-img");
     }
 
     clear(background_color) {
@@ -48,18 +50,53 @@ class Renderer {
         this.ctx.translate(-x, -y);
     }
 
-    draw_player(player_obj, death_image) {
+    draw_player(player_obj) {
         if (player_obj.alive) {
             this.draw_circle(player_obj.x, player_obj.y, PLAYER_RADIUS, player_obj.color);
         }
         else {
             this.draw_image(
-                death_image,
+                this.death_image,
                 player_obj.x,
                 player_obj.y
             );
         }
     }
+
+    draw_player_data(player_obj, client_player, on_hit) {
+        // draw player name
+        this.draw_text(
+            player_obj.alive ? player_obj.name : "DEAD", 
+            player_obj.x-PLAYER_RADIUS, 
+            player_obj.y-PLAYER_RADIUS*2);
+        // draw player body 
+        this.draw_player(player_obj);
+        // draw player weapon
+        if (player_obj.alive) { // dead people dont have a weapon
+            this.draw_image(
+                get_player_image(player_obj.weapon_src),
+                player_obj.x+WEAPON_DISTANCE.x, 
+                player_obj.y+WEAPON_DISTANCE.y, 
+                player_obj.weapon_angle);
+        }
+    
+        
+        // draw bullets
+        player_obj.bullets.forEach(bullet => {
+            this.draw_circle(bullet.x, bullet.y, BULLET_RADIUS, "black");
+            // if client was hit by a bullet that was shot by another player
+            if (client_player !== null) {
+                if (
+                    bullet.x >= client_player.x-PLAYER_RADIUS && bullet.x <= client_player.x+PLAYER_RADIUS*2 &&
+                    bullet.y >= client_player.y-PLAYER_RADIUS && bullet.y <= client_player.y+PLAYER_RADIUS*2
+                ) {
+                    on_hit();
+                }
+            }
+            
+        });
+    }
+    
     
 
     get_width() {

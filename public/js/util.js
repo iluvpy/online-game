@@ -49,6 +49,8 @@ function get_player_image(src) {
     return html_img;
 }
 
+function void_function() {}
+
 export { 
     sleep,
     get_random_choice,
@@ -57,5 +59,6 @@ export {
     rotate,
     get_request,
     get_random_player_name,
-    get_player_image
+    get_player_image,
+    void_function
 };
