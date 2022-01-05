@@ -60,12 +60,12 @@ username_inp.addEventListener("input", (ev) => {
 
 function draw() {
     
-    render.draw_player_data(player, null, die);
+    render.draw_player_data(player, null, null);
 
     for (var player_id in game_socket.player_data) {
         if (player_id !== game_socket.id()) {
             const other_player = game_socket.player_data[player_id];
-            render.draw_player_data(other_player, player, null);
+            render.draw_player_data(other_player, player, die);
         }
     }
     
