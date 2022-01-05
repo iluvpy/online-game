@@ -52,7 +52,7 @@ window.onload = async () => {
 
 
 username_inp.addEventListener("input", (ev) => {
-    keys.press(ev.data) = false; // dont allow key presses while typing name
+    keys.set_key(ev.data, false); // dont allow key presses while typing name
     if (username_inp.value.length <= consts.MAX_NAME_SIZE) {
         player.name = username_inp.value;
     }

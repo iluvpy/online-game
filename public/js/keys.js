@@ -83,7 +83,7 @@ export default class KeysHandler {
         player.bullets = player.bullets.filter(bullet => !(bullet.x > CANVAS_WIDTH || bullet.x < 0 || bullet.y > CANVAS_HEIGHT || bullet.y < 0));  
     }
 
-    press(key) {
-        this.keys_pressed[key] = true;
+    set_key(key, val) {
+        this.keys_pressed[key] = val;
     }
 }
