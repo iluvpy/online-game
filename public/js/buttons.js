@@ -5,8 +5,8 @@ class RotationOptionButtons {
     constructor() {
         this.option_button1 = document.getElementById("option-button1");
         this.option_button2 = document.getElementById("option-button2");
-        this.option_button1.style.border = OPTION_BUTTON_BORDER;
         const BASE_BORDER = this.option_button1.style.border;
+        this.option_button1.style.border = OPTION_BUTTON_BORDER;
         this.mouse_rotation = true;
         const on_click = (image, is_btn1) => {
             const border = OPTION_BUTTON_BORDER;
