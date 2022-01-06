@@ -6,6 +6,7 @@ import MovementManager from "./movement.js";
 import html_events from "./events.js";
 import KeysHandler from "./keys.js";
 import GameSocket from "./socket.js";
+import { RotationOptionButtons } from "./buttons.js";
 
 
 // html elems
@@ -24,6 +25,7 @@ const player_movement = new MovementManager(player.x, player.y);
 const render = new Renderer(ctx);
 const keys = new KeysHandler();
 const game_socket = new GameSocket();
+const rotation_options = new RotationOptionButtons();
 
 
 window.onload = async () => {
@@ -87,11 +89,20 @@ function draw() {
 function handle_misc() {
     player.weapon_src = weapon_image.src;
     player.respawn_protection = has_respawn_prot();
+    if (keys.is_pressed("g")) {
+        const pos = keys.get_mouse_pos();
+        console.log(`canvas x: ${render.ctx.x}`);
+        console.log(`mouse pos ${pos.x} ${pos.y}`);
+    }
 }
 
 function update(delta_time) {
     if (player.alive) {
-        keys.handle_keys(delta_time, player, player_movement);
+        keys.handle_movement(player_movement);
+        keys.handle_bullet_key(player);
+        keys.handle_weapon_rotation(delta_time, player, rotation_options.using_mouse_rotation(), render);
+       
+
     }
     keys.handle_bullets(delta_time, player);
     handle_misc();

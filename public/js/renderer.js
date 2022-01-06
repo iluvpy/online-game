@@ -39,6 +39,13 @@ class Renderer {
         this.ctx.fillRect(x, y, w, h);
     }
 
+    draw_line(x1, y1, x2, y2) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(x1, y1);
+        this.ctx.lineTo(x2, y2);
+        this.ctx.stroke();
+    }
+
     draw_image(image, x, y, angle=0) {
         var width = image.width;
         var height = image.height;
@@ -107,9 +114,10 @@ class Renderer {
         }
         const x  = 20;
         const font = "12px arial";
-        this.draw_text("Deaths", x, 70, font);
-        var start_y = 100;
         const y_separation = 20;
+        var start_y = 400;
+        this.draw_text("Deaths", x, start_y-y_separation, font);
+        
         const color = "white";
         for (var i = 0; i < 100; i++) {
             for (var player_name in list) {

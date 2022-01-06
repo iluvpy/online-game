@@ -19,4 +19,5 @@ export default function html_events() {
             weapon_image.src = WEAPONS[0];
         }
     });
+
 }

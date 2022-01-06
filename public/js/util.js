@@ -23,6 +23,10 @@ function to_radians(degrees) {
     return degrees * (Math.PI/180);
 }
 
+function to_degrees(radians) {
+    return radians * (180/Math.PI);
+}
+
 function rotate(point, origin ,angle) {
     var radians = to_radians(angle);
     var c = Math.cos(radians);
@@ -58,6 +62,7 @@ export {
     get_random_choice,
     get_random_int,
     to_radians,
+    to_degrees,
     rotate,
     get_request,
     get_random_player_name,

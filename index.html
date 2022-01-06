@@ -9,15 +9,15 @@
 </head>
 <body>
     <input type="text" id="name-inp" placeholder="Name">
+    <img src="/img/cursor.png" id="option-button1" alt="cursor image">
+    <img src="/img/arrow-keys.png" id="option-button2" alt="arrow keys">
     <div class="weapon">
-        <img id="weapon" src="/img/ak47-model2.png" alt="">
+        <img id="weapon" src="/img/ak47-model2.png" alt="current weapon">
     </div>
     <div class="images" style="display: none;">
         <img src="/img/rip.png" id="death-img" alt="">
     </div>
-    <div class="container">
-        <canvas id="display"></canvas>
-    </div>
+    <canvas id="display"></canvas>
     
     <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
     <script src="/js/game.js" type="module"></script>

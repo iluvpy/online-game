@@ -2,12 +2,14 @@ body {
     background: #2c2f33;
 }
 
-.container {
+
+canvas {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0px;
+    left: 0px;;
+    z-index: -10;
 }
+
 #name-inp {
     position: absolute;
     display: block;
@@ -18,7 +20,7 @@ body {
     text-align: center;
     border-radius: 50px;
     border: none;
-    background-color: #4e565d;
+    background-color: #2c2f33;
     color: white;
     outline: none;
 }
@@ -36,4 +38,17 @@ body {
 
 #weapon:hover {
     border: solid 6px #657079;
+}
+
+#option-button1 {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 17%;
+    border: solid 5px #4f555c;
+}
+
+#option-button2 {
+    margin-top: 10px;
+    margin-left: 22%;
+    border: solid 5px #4f555c;
 }
