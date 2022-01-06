@@ -12,10 +12,10 @@ class MovementManager {
     update(delta_time, canvas_width, canvas_height) {
         const next_x = this.x + this.dx * delta_time; 
         const next_y = this.y + this.dy * delta_time; 
-        if (next_x-PLAYER_RADIUS > 0 && next_x < canvas_width-PLAYER_RADIUS*2) {
+        if (next_x-PLAYER_RADIUS > 0 && next_x < canvas_width-PLAYER_RADIUS) {
             this.x = next_x;
         }
-        if (next_y-PLAYER_RADIUS > 0 && next_y < canvas_height-PLAYER_RADIUS*2) {
+        if (next_y-PLAYER_RADIUS > 0 && next_y < canvas_height-PLAYER_RADIUS) {
             this.y = next_y;
         }
         

@@ -58,7 +58,7 @@ username_inp.addEventListener("input", (ev) => {
 });
 
 function draw() {
-    
+    render.draw_player_list(game_socket.player_data);
     render.draw_player_data(player, null, null);
 
     for (var player_id in game_socket.player_data) {
@@ -84,7 +84,6 @@ function draw() {
 }
 
 
-
 function handle_misc() {
     player.weapon_src = weapon_image.src;
     player.respawn_protection = has_respawn_prot();
@@ -108,7 +107,7 @@ function die() {
     if (player.alive && !player.respawn_protection) {
         player.alive = false;
         player_death_time = now;
-        player.died++;
+        player.death_count++;
     }
 }
 

@@ -66,7 +66,7 @@ class Renderer {
     draw_player_data(player_obj, client_player, on_hit) {
         // draw player name
         this.draw_text(
-            player_obj.alive ? player_obj.name : "DEAD", 
+            player_obj.name, 
             player_obj.x-PLAYER_RADIUS, 
             player_obj.y-PLAYER_RADIUS*2);
         // draw player body 
@@ -97,6 +97,30 @@ class Renderer {
         });
     }
     
+    // list players by lowest death count to highest
+    draw_player_list(player_data) {
+        if (player_data === null) return;
+        const list = {}; // player_name : death_count
+        for (var key in player_data) {
+            const player = player_data[key];
+            list[player.name] = player.death_count;
+        }
+        const x  = 20;
+        const font = "12px arial";
+        this.draw_text("Deaths", x, 70, font);
+        var start_y = 100;
+        const y_separation = 20;
+        const color = "white";
+        for (var i = 0; i < 100; i++) {
+            for (var player_name in list) {
+                var death_count = list[player_name];
+                if (death_count == i) {
+                    this.draw_text(`${player_name}: ${death_count}`, x, start_y, font, color);
+                    start_y += y_separation;
+                }
+            }
+        }
+    }
     
 
     get_width() {
