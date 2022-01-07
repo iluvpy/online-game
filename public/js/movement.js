@@ -1,47 +1,41 @@
-import { PLAYER_FRICTION, PLAYER_RADIUS, PLAYER_SPEED } from "./constants.js";
-import { Point } from "./shapes.js";
-
-class MovementManager {
-    constructor(player_x, player_y) {
+"use strict";
+exports.__esModule = true;
+var constants_js_1 = require("./constants.js");
+var shapes_js_1 = require("./shapes.js");
+var MovementManager = /** @class */ (function () {
+    function MovementManager(player_x, player_y) {
         this.x = player_x;
         this.y = player_y;
         this.dy = 0;
         this.dx = 0;
     }
-
-    update(delta_time, canvas_width, canvas_height) {
-        const next_x = this.x + this.dx * delta_time; 
-        const next_y = this.y + this.dy * delta_time; 
-        if (next_x-PLAYER_RADIUS > 0 && next_x < canvas_width-PLAYER_RADIUS) {
+    MovementManager.prototype.update = function (delta_time, canvas_width, canvas_height) {
+        var next_x = this.x + this.dx * delta_time;
+        var next_y = this.y + this.dy * delta_time;
+        if (next_x - constants_js_1.PLAYER_RADIUS > 0 && next_x < canvas_width - constants_js_1.PLAYER_RADIUS) {
             this.x = next_x;
         }
-        if (next_y-PLAYER_RADIUS > 0 && next_y < canvas_height-PLAYER_RADIUS) {
+        if (next_y - constants_js_1.PLAYER_RADIUS > 0 && next_y < canvas_height - constants_js_1.PLAYER_RADIUS) {
             this.y = next_y;
         }
-        
-        this.dx *= PLAYER_FRICTION;
-        this.dy *= PLAYER_FRICTION;
-    }
-
-    move_up() {
-        this.dy -= PLAYER_SPEED;
-    }
-
-    move_down() {
-        this.dy += PLAYER_SPEED;
-    }
-
-    move_left() {
-        this.dx -= PLAYER_SPEED;
-    }
-
-    move_right() {
-        this.dx += PLAYER_SPEED;
-    }
-
-    get_coords() {
-        return new Point(this.x, this.y);
-    }
-}
-
-export default MovementManager;
+        this.dx *= constants_js_1.PLAYER_FRICTION;
+        this.dy *= constants_js_1.PLAYER_FRICTION;
+    };
+    MovementManager.prototype.move_up = function () {
+        this.dy -= constants_js_1.PLAYER_SPEED;
+    };
+    MovementManager.prototype.move_down = function () {
+        this.dy += constants_js_1.PLAYER_SPEED;
+    };
+    MovementManager.prototype.move_left = function () {
+        this.dx -= constants_js_1.PLAYER_SPEED;
+    };
+    MovementManager.prototype.move_right = function () {
+        this.dx += constants_js_1.PLAYER_SPEED;
+    };
+    MovementManager.prototype.get_coords = function () {
+        return new shapes_js_1.Point(this.x, this.y);
+    };
+    return MovementManager;
+}());
+exports["default"] = MovementManager;

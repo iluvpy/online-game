@@ -28,8 +28,8 @@ canvas {
 
 #weapon {
     position: absolute;
-    margin-top: 5%;
-    margin-left: 2%;
+    margin-top: 0;
+    margin-left: 1%;
     padding: 10px;
     background-color: #373c41;
     border: solid 6px #4e565d;

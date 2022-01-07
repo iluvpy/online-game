@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "lib": ["DOM"],
+        "target": "ES3"
+    },    
+    "files": [
+        "./src/game/game.ts"
+    ]
+    
+  
+}
