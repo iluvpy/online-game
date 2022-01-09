@@ -2,25 +2,28 @@ import { to_radians } from "./util.js";
 import { PLAYER_RADIUS, BULLET_RADIUS, WEAPON_DISTANCE } from "./constants.js";
 import { get_player_image } from "./util.js";
 import { Rect } from "./shapes.js";
+import Color from "./color.js";
 
 class Renderer {
+    ctx: CanvasRenderingContext2D
+    death_image: HTMLImageElement
     constructor(ctx) {
         this.ctx = ctx;
-        this.death_image = document.getElementById("death-img");
+        this.death_image = document.getElementById("death-img") as HTMLImageElement;
     }
 
-    clear(background_color) {
-        this.ctx.fillStyle = background_color
+    clear(background_color: Color) {
+        this.ctx.fillStyle = background_color.get_color();
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
 
-    draw_text(text, x, y, font = "11px serif", color = "white") {
+    draw_text(text: string, x: number, y: number, font = "11px serif", color = "white") {
         this.ctx.fillStyle = color;
         this.ctx.font = font;
         this.ctx.fillText(text, x, y);
     }
 
-    draw_center_text(text, font="11px serif", color = "white") {
+    draw_center_text(text: string, font="11px serif", color = "white") {
         this.ctx.fillStyle = color;
         this.ctx.font = font;
         this.ctx.textAlign = "center";
@@ -28,15 +31,15 @@ class Renderer {
         this.ctx.textAlign = "start";
     }
 
-    draw_circle(x, y, radius, color) {
+    draw_circle(x: number, y: number, radius: number, color: Color) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = color;
+        this.ctx.fillStyle = color.get_color();
         this.ctx.fill(); 
     }
 
-    draw_rect(x, y, w, h, color) {
-        this.ctx.fillStyle = color;
+    draw_rect(x: number, y: number, w: number, h: number, color: Color) {
+        this.ctx.fillStyle = color.get_color();
         this.ctx.fillRect(x, y, w, h);
     }
 
@@ -44,14 +47,14 @@ class Renderer {
         this.draw_rect(rect.x, rect.y, rect.w, rect.h, rect.get_color());
     }
 
-    draw_line(x1, y1, x2, y2) {
+    draw_line(x1: number, y1: number, x2: number, y2: number) {
         this.ctx.beginPath();
         this.ctx.moveTo(x1, y1);
         this.ctx.lineTo(x2, y2);
         this.ctx.stroke();
     }
 
-    draw_image(image, x, y, angle=0) {
+    draw_image(image: HTMLImageElement, x: number, y: number, angle=0) {
         var width = image.width;
         var height = image.height;
         var radians = to_radians(angle);
@@ -62,7 +65,7 @@ class Renderer {
         this.ctx.translate(-x, -y);
     }
 
-    draw_player(player_obj) {
+    draw_player(player_obj: any | Object) {
         if (player_obj.alive) {
             this.draw_circle(player_obj.x, player_obj.y, PLAYER_RADIUS, player_obj.color);
         }

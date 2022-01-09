@@ -1,6 +1,8 @@
 import Color from "./color.js";
 
 class Point {
+    x: number
+    y: number
     constructor(x, y) {
         this.x = x 
         this.y = y;
@@ -8,7 +10,12 @@ class Point {
 }
 
 class Rect {
-    constructor(x, y, w, h, color=Color()) {
+    x: number
+    y: number
+    w: number
+    h: number
+    color: Color
+    constructor(x: number, y: number, w: number, h: number, color= new Color()) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -17,7 +24,7 @@ class Rect {
     }
 
     get_color() {
-        return this.color.get_color();
+        return this.color;
     }
 }
 export { Point, Rect };

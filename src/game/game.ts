@@ -7,12 +7,12 @@ import html_events from "./events.js";
 import KeysHandler from "./keys.js";
 import GameSocket from "./socket.js";
 import { ImageButton, RotationOptionButtons } from "./buttons.js";
-
+import Color from "./color.js";
 
 // html elems
 const canvas = document.getElementById("display") as HTMLCanvasElement;
 const username_inp = document.getElementById("name-inp") as HTMLInputElement;
-const weapon_image = document.getElementById("weapon");
+const weapon_image = document.getElementById("weapon") as HTMLImageElement;
 // variables
 var player = base_player;
 var player_death_time = 0; // when the player died
@@ -29,7 +29,7 @@ const rotation_options = new RotationOptionButtons();
 
 
 // init image buttons
-const image_btn1 = new ImageButton(200, 500, "/img/cursor.png", 10, "#4e565d", "#2c2f33");
+const image_btn1 = new ImageButton(200, 500, "/img/cursor.png", 10, new Color(78, 86, 93), new Color(44, 47, 51));
 
 window.onload = async () => {
     html_events();
@@ -55,12 +55,13 @@ window.onload = async () => {
 };
 
 
-username_inp.addEventListener("input", (ev) => {
-    keys.set_key(ev.data, false); // dont allow key presses while typing name
+username_inp.addEventListener('keyup', (e: KeyboardEvent) => { 
+    keys.set_key(e.key, false); // dont allow key presses while typing name
     if (username_inp.value.length <= consts.MAX_NAME_SIZE) {
         player.name = username_inp.value;
     }
 });
+
 
 function draw() {
     render.draw_player_list(game_socket.player_data);
@@ -94,12 +95,11 @@ function handle_misc() {
     player.respawn_protection = has_respawn_prot();
     if (keys.is_pressed("g")) {
         const pos = keys.get_mouse_pos();
-        console.log(`canvas x: ${render.ctx.x}`);
         console.log(`mouse pos ${pos.x} ${pos.y}`);
     }
 }
 
-function update(delta_time) {
+function update(delta_time: number) {
     if (player.alive) {
         keys.handle_movement(player_movement);
         keys.handle_bullet_key(player);

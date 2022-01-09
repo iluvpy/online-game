@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
-        "lib": ["DOM"],
-        "target": "ES3"
+        "lib": ["DOM", "ES6"],
+        "target": "ES5",
+        "outDir": "./public/js/",
+        "module": "ES6"
     },    
     "files": [
         "./src/game/game.ts"

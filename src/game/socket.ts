@@ -1,6 +1,8 @@
-
+import { io, Socket } from "socket.io-client";
 
 export default class GameSocket {
+    player_data: Object
+    socket: Socket
     constructor() {
         this.player_data = null;
         this.socket = io(window.location.href);
@@ -10,7 +12,7 @@ export default class GameSocket {
         });
     }
 
-    update(player) {
+    update(player: Object) {
         this.socket.emit("get-data", player);
     }    
 
