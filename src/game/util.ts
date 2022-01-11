@@ -1,4 +1,4 @@
-import { Point } from "./shapes";
+import { Point } from "./shapes.js";
 
 
 function get_random_player_name() {

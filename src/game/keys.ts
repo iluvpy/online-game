@@ -15,6 +15,10 @@ import { get_time, rotate, to_degrees } from "./util.js";
 import { Point } from "./shapes.js";
 
 export default class KeysHandler {
+    keys_pressed: Object
+    mouse_pos: Point
+    event_callbacks: Object
+    last_bullet_shot: number
     constructor() {
         this.keys_pressed = {};
         this.mouse_pos = new Point(0, 0);
@@ -27,7 +31,7 @@ export default class KeysHandler {
             }
 
             if ("keydown" in this.event_callbacks) {
-                for (var callback of this.event_callbacks) {
+                for (var callback of this.event_callbacks["keydown"]) {
                     callback(ev);
                 }
             }
@@ -38,7 +42,7 @@ export default class KeysHandler {
                 ev.preventDefault();
             }
             if ("keyup" in this.event_callbacks) {
-                for (var callback of this.event_callbacks) {
+                for (var callback of this.event_callbacks["keyup"]) {
                     callback(ev);
                 }
             }
@@ -48,7 +52,7 @@ export default class KeysHandler {
             this.mouse_pos.x = ev.x;
             this.mouse_pos.y = ev.y;
             if ("mousemove" in this.event_callbacks) {
-                for (var callback of this.event_callbacks) {
+                for (var callback of this.event_callbacks["mousemove"]) {
                     callback(ev);
                 }
             }
@@ -56,7 +60,7 @@ export default class KeysHandler {
 
         window.onmouseup = (ev) => {
             if ("mouseup" in this.event_callbacks) {
-                for (var callback of this.event_callbacks) {
+                for (var callback of this.event_callbacks["mouseup"]) {
                     callback(ev);
                 }
             }
@@ -64,7 +68,7 @@ export default class KeysHandler {
 
         window.onmousedown = (ev) => {
             if ("mousedown" in this.event_callbacks) {
-                for (var callback of this.event_callbacks) {
+                for (var callback of this.event_callbacks["mousedown"]) {
                     callback(ev);
                 }
             }

@@ -22,11 +22,6 @@
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
-"@types/dom-inputevent@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@types/dom-inputevent/-/dom-inputevent-1.0.7.tgz#3776e2e76c1c926d33b78185dc660e53a1e95232"
-  integrity sha512-R0ILeMNwjxCwiF9FDlCl2pUlGZW+4OUqJe6DyOsyrdK1PEoZ1TxgkfQfEy7vniFUrKyAy+dP2BNAXcRqEyf9dQ==
-
 "@types/node@>=10.0.0":
   version "17.0.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.5.tgz#57ca67ec4e57ad9e4ef5a6bab48a15387a1c83e0"

@@ -1,10 +1,11 @@
-import { io, Socket } from "socket.io-client";
+
 
 export default class GameSocket {
     player_data: Object
-    socket: Socket
+    socket: any
     constructor() {
         this.player_data = null;
+        // @ts-ignore
         this.socket = io(window.location.href);
         // pull data from server
         this.socket.on("data", (my_data) => {

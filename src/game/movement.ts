@@ -2,14 +2,18 @@ import { PLAYER_FRICTION, PLAYER_RADIUS, PLAYER_SPEED } from "./constants.js";
 import { Point } from "./shapes.js";
 
 class MovementManager {
-    constructor(player_x, player_y) {
+    x: number
+    y: number
+    dy: number
+    dx: number
+    constructor(player_x: number, player_y: number) {
         this.x = player_x;
         this.y = player_y;
         this.dy = 0;
         this.dx = 0;
     }
 
-    update(delta_time, canvas_width, canvas_height) {
+    update(delta_time: number, canvas_width: number, canvas_height: number) {
         const next_x = this.x + this.dx * delta_time; 
         const next_y = this.y + this.dy * delta_time; 
         if (next_x-PLAYER_RADIUS > 0 && next_x < canvas_width-PLAYER_RADIUS) {

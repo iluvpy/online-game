@@ -1,7 +1,7 @@
-import Color from "./color";
-import { OPTION_BUTTON_BORDER } from "./constants";
-import { Rect } from "./shapes";
-import Renderer from "./renderer";
+import Color from "./color.js";
+import { OPTION_BUTTON_BORDER } from "./constants.js";
+import { Rect } from "./shapes.js";
+import Renderer from "./renderer.js";
 
 class RotationOptionButtons {
     option_button1: HTMLElement

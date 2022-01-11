@@ -1,3 +1,5 @@
+import Color from "./color.js";
+
 const MAX_NAME_SIZE = 20;
 const UPDATE_RATE = 1; // rate at which the game updates
 const PLAYER_RADIUS = 10;
@@ -23,7 +25,9 @@ const BULLET_SPEED = 350;
 const CANVAS_WIDTH = window.innerWidth;
 const CANVAS_HEIGHT = window.innerHeight;
 const RESPAWN_TIME = 3000; // it takes 3 seconds to respawn
-const BACKGROUND_COLOR = "#4f555c";
+const BACKGROUND_COLOR = new Color(79,85,92);
+const BLACK = new Color(0, 0, 0);
+const WHITE = new Color(255, 255, 255);
 const RESPAWN_PROT_TIME = 3000; // you are invincible for 3000
 const OPTION_BUTTON_BORDER = "5px solid rgb(44, 47, 51)";
 // keys that are used in the game but already have a function in the browser
@@ -49,5 +53,7 @@ export {
     RESPAWN_PROT_TIME,
     OPTION_BUTTON_BORDER,
     USED_KEYS_WITH_DEFAULT,
-    BULLET_ANGLE_OFFSET
+    BULLET_ANGLE_OFFSET,
+    BLACK,
+    WHITE
 };

@@ -1,5 +1,5 @@
 import { to_radians } from "./util.js";
-import { PLAYER_RADIUS, BULLET_RADIUS, WEAPON_DISTANCE } from "./constants.js";
+import { PLAYER_RADIUS, BULLET_RADIUS, WEAPON_DISTANCE, BLACK } from "./constants.js";
 import { get_player_image } from "./util.js";
 import { Rect } from "./shapes.js";
 import Color from "./color.js";
@@ -34,17 +34,17 @@ class Renderer {
     draw_circle(x: number, y: number, radius: number, color: Color) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = color.get_color();
+        this.ctx.fillStyle = color.color;
         this.ctx.fill(); 
     }
 
     draw_rect(x: number, y: number, w: number, h: number, color: Color) {
-        this.ctx.fillStyle = color.get_color();
+        this.ctx.fillStyle = color.color;
         this.ctx.fillRect(x, y, w, h);
     }
 
     draw_gui_rect(rect: Rect) {
-        this.draw_rect(rect.x, rect.y, rect.w, rect.h, rect.get_color());
+        this.draw_rect(rect.x, rect.y, rect.w, rect.h, rect.color);
     }
 
     draw_line(x1: number, y1: number, x2: number, y2: number) {
@@ -98,7 +98,7 @@ class Renderer {
         
         // draw bullets
         player_obj.bullets.forEach(bullet => {
-            this.draw_circle(bullet.x, bullet.y, BULLET_RADIUS, "black");
+            this.draw_circle(bullet.x, bullet.y, BULLET_RADIUS, BLACK);
             // if client was hit by a bullet that was shot by another player
             if (client_player !== null) {
                 if (
