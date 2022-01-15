@@ -29,7 +29,7 @@ const rotation_options = new RotationOptionButtons();
 
 
 // init image buttons
-const image_btn1 = new ImageButton(200, 500, "/img/cursor.png", 10, new Color(78, 86, 93), new Color(44, 47, 51));
+const image_btn1 = new ImageButton(keys, 200, 500, "/img/cursor.png", 10, new Color(78, 86, 93), new Color(44, 47, 51));
 window.onload = async () => {
     html_events();
     var delta_time = 0.0;

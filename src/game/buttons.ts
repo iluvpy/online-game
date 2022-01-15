@@ -1,7 +1,8 @@
 import Color from "./color.js";
 import { OPTION_BUTTON_BORDER } from "./constants.js";
-import { Rect } from "./shapes.js";
+import { Point, Rect } from "./shapes.js";
 import Renderer from "./renderer.js";
+import KeysHandler from "./keys.js";
 
 class RotationOptionButtons {
     option_button1: HTMLElement
@@ -15,9 +16,7 @@ class RotationOptionButtons {
         this.mouse_rotation = true;
         const on_click = (image, is_btn1) => {
             const border = OPTION_BUTTON_BORDER;
-            console.log(`border before change: ${image.style.border}`)
             if (image.style.border !== border) {
-                console.log("setting border to new color");
                 image.style.border = border;
                 if (is_btn1) {
                     this.mouse_rotation = true;
@@ -29,7 +28,6 @@ class RotationOptionButtons {
                 }
             } 
             else {
-                console.log("setting border back to base color");
                 image.style.border = BASE_BORDER;
                 if (is_btn1) {
                     this.option_button2.style.border = border;
@@ -64,21 +62,30 @@ class ImageButton {
     image: HTMLImageElement
     background_rect: Rect
     outline_rect: Rect
-
-    constructor(x: number, y: number, image_path: string, outline_width: number, outline_color: Color, background_color: Color) {
+    w: number
+    h: number
+    constructor(keys: KeysHandler, x: number, y: number, image_path: string, outline_width: number, outline_color: Color, background_color: Color) {
         this.active = false;
         this.x = x;
         this.y = y;
         this.image = new Image();
         this.image.src = image_path;
-        this.background_rect = new Rect(x, y, this.image.width, this.image.height, background_color);
-        this.outline_rect = new Rect(x-outline_width, y-outline_width, this.image.width+outline_width*2, this.image.height+outline_width*2, outline_color);
+        this.w = this.image.width;
+        this.h = this.image.height;
+        this.background_rect = new Rect(x, y, this.w, this.h, background_color);
+        this.outline_rect = new Rect(x-outline_width, y-outline_width, this.w+outline_width*2, this.h+outline_width*2, outline_color);
 
-        this.image.onclick = (ev) => {
-            this.active = !this.active;
-        }
+        keys.add_callback("mousedown", (ev: MouseEvent) => {this.on_press(ev);});
     }
 
+    on_press(ev: MouseEvent) {
+        const mouse_pos = new Point(ev.x, ev.y);
+        if (mouse_pos.x >= this.x && mouse_pos.x <= this.x+this.w &&
+            mouse_pos.y >= this.y && mouse_pos.y <= this.y+this.h) {
+            console.log("mouse clicked image button");
+            this.active = !this.active;
+        }
+    } 
     
     draw(render: Renderer) {
         render.draw_gui_rect(this.background_rect);

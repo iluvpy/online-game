@@ -19,11 +19,12 @@ export default class KeysHandler {
     mouse_pos: Point
     event_callbacks: Object
     last_bullet_shot: number
+    mouse_down: boolean
     constructor() {
         this.keys_pressed = {};
         this.mouse_pos = new Point(0, 0);
         this.event_callbacks = {}; // "mouseup", "mousedown", "keydown", etc
-
+        this.mouse_down = false;
         window.onkeydown = (ev) => {
             this.keys_pressed[ev.key] = true;
             if (ev.key in USED_KEYS_WITH_DEFAULT) {
@@ -31,7 +32,8 @@ export default class KeysHandler {
             }
 
             if ("keydown" in this.event_callbacks) {
-                for (var callback of this.event_callbacks["keydown"]) {
+                const callbacks: Array<Function> = this.event_callbacks["keydown"];
+                for (var callback of callbacks) {
                     callback(ev);
                 }
             }
@@ -42,33 +44,39 @@ export default class KeysHandler {
                 ev.preventDefault();
             }
             if ("keyup" in this.event_callbacks) {
-                for (var callback of this.event_callbacks["keyup"]) {
+                const callbacks: Array<Function> = this.event_callbacks["keyup"];
+                for (var callback of callbacks) {
                     callback(ev);
                 }
             }
         }
 
-        window.onmousemove = (ev) => {
+        window.onmousemove = (ev: MouseEvent) => {
             this.mouse_pos.x = ev.x;
             this.mouse_pos.y = ev.y;
             if ("mousemove" in this.event_callbacks) {
-                for (var callback of this.event_callbacks["mousemove"]) {
+                const callbacks: Array<Function> = this.event_callbacks["mousemove"];
+                for (var callback of callbacks) {
                     callback(ev);
                 }
             }
         }
 
-        window.onmouseup = (ev) => {
+        window.onmouseup = (ev: MouseEvent) => {
+            this.mouse_down = false;
             if ("mouseup" in this.event_callbacks) {
-                for (var callback of this.event_callbacks["mouseup"]) {
+                const callbacks: Array<Function> = this.event_callbacks["mousup"];
+                for (var callback of callbacks) {
                     callback(ev);
                 }
             }
         }
 
-        window.onmousedown = (ev) => {
+        window.onmousedown = (ev: MouseEvent) => {
+            this.mouse_down = true;
             if ("mousedown" in this.event_callbacks) {
-                for (var callback of this.event_callbacks["mousedown"]) {
+                const callbacks: Array<Function> = this.event_callbacks["mousedown"];
+                for (var callback of callbacks) {
                     callback(ev);
                 }
             }
@@ -146,7 +154,7 @@ export default class KeysHandler {
     }
 
     // updates the position of a bullets
-    handle_bullets(delta_time, player) {
+    handle_bullets(delta_time: number, player: any) {
         var i = 0;
         player.bullets.forEach(bullet => {
             bullet.x += bullet.x_speed * delta_time;
@@ -169,7 +177,17 @@ export default class KeysHandler {
         return this.mouse_pos;
     }
 
-    add_callback(event_name, callback) {
-        this.event_callbacks[event_name] = callback;
+    is_mouse_down() {
+        return this.mouse_down;
+    }
+
+    add_callback(event_name: string, callback: Function) {
+        if (event_name in this.event_callbacks) {
+            this.event_callbacks[event_name].push(callback);
+        } 
+        else {
+            this.event_callbacks[event_name] = Array();
+            this.event_callbacks[event_name].push(callback);
+        }
     }
 }
