@@ -1,4 +1,4 @@
-import { sleep, get_time } from "./util.js";
+import { sleep, get_time, get_player_image } from "./util.js";
 import * as consts from "./constants.js";
 import base_player from "./player.js";
 import Renderer from "./renderer.js";
@@ -29,7 +29,7 @@ const rotation_options = new RotationOptionButtons();
 
 
 // init image buttons
-const image_btn1 = new ImageButton(keys, 200, 500, "/img/cursor.png", 10, new Color(78, 86, 93), new Color(44, 47, 51));
+const image_btn1 = new ImageButton(keys, 200, 500, "/img/cursor.png", 10, new Color(255, 255, 255), new Color(44, 47, 51));
 window.onload = async () => {
     html_events();
     var delta_time = 0.0;

@@ -58,11 +58,13 @@ class Renderer {
         var width = image.width;
         var height = image.height;
         var radians = to_radians(angle);
-        this.ctx.translate(x, y);
+        var hh = height / 2;
+        var hw = width / 2;
+        this.ctx.translate(x + hw, y + hh);
         this.ctx.rotate(radians);
-        this.ctx.drawImage(image, -width / 2, -height / 2, width, height);
+        this.ctx.drawImage(image, -hw, -hh, width, height);
         this.ctx.rotate(-radians);
-        this.ctx.translate(-x, -y);
+        this.ctx.translate(-x -hw, -y -hh);
     }
 
     draw_player(player_obj: any | Object) {

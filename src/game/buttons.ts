@@ -88,10 +88,10 @@ class ImageButton {
     } 
     
     draw(render: Renderer) {
-        render.draw_gui_rect(this.background_rect);
         if (this.active) {
             render.draw_gui_rect(this.outline_rect);
         }
+        render.draw_gui_rect(this.background_rect);
         render.draw_image(this.image, this.x, this.y);
     }
 

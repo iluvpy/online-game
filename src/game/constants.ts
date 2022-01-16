@@ -13,11 +13,12 @@ const WEAPONS = [
     "/img/assault-rifle-model1.png",
     "/img/assault-rifle-model2.png",
     "/img/assault-rifle-model3.png"];
+const WEAPON_IMAGE_SIZE = 64; 
 const WEAPON_IDLE_ANGLE = 135;
 const BULLET_ANGLE_OFFSET = 45;
 const WEAPON_DISTANCE = {
-    x: 2*PLAYER_RADIUS,
-    y: PLAYER_RADIUS/2
+    x: -WEAPON_IMAGE_SIZE/2 + PLAYER_RADIUS,
+    y: -WEAPON_IMAGE_SIZE/2 + PLAYER_RADIUS
 };
 const BULLET_RADIUS = 5;
 const BULLET_INTERVAL = 200; // you can shoot only 1 bullet each BULLET_INTERVAL in ms
@@ -55,5 +56,6 @@ export {
     USED_KEYS_WITH_DEFAULT,
     BULLET_ANGLE_OFFSET,
     BLACK,
-    WHITE
+    WHITE,
+    WEAPON_IMAGE_SIZE
 };
