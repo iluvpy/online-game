@@ -29,8 +29,7 @@ io.on('connection', socket => {
             if (!(id in player_data)) {
                 console.log(`${id} connected!`);
             }
-            
-                player_data[id] = data;
+            player_data[id] = data;
         }
         socket.emit("data", player_data);
         
